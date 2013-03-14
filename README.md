@@ -5,7 +5,7 @@ A NES Emulator written in Perl.  The goal of this project is to write a fully fu
 # Perl requirements
 
 perl-nes requires SDL.  To install SDL use
-	``` perl -MCPAN -e 'install("Alien::SDL");' ```
+	```bash cpan -i Alien::SDL && cpan -i SDL && cpan -i JSON ```
 
 # Sources and Refrences
 

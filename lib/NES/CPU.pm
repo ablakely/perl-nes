@@ -6,14 +6,17 @@ use strict;
 use warnings;
 use NES::CPU::OpData;
 
-my $IRQ_NORMAL  = 0;
-my $IRQ_NMI		= 1;
-my $IRQ_RESET	= 2;
+our $IRQ_NORMAL  = 0;
+our $IRQ_NMI		= 1;
+our $IRQ_RESET	= 2;
 
 sub new {
 	my ($class) = @_;
 
 	my $self = {
+		IRQ_NORMAL 			=> 0,
+		IRQ_NMI 			=> 1,
+		IRQ_RESET 			=> 2,
 		REG_ACC				=> undef,
 		REG_X				=> undef,
 		REG_Y				=> undef,
@@ -996,7 +999,7 @@ sub emulate {
 			# Unknown Instruction -- Crash
 
 			$self::NES->{stop}();
-			$self::NES->{crash_message} = "Game crashed!  Invalid opcode at address: \$".$opaddr;
+			$self::NES->{crash_message} = "Game crashed!  Invalid opcode at address: \$".sprintf("%X", $opaddr);
 
 			break;
 		}
