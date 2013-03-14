@@ -2,6 +2,11 @@ package NES::PPU;
 
 use strict;
 use warnings;
+use NES::ROM;
+use NES::CPU;
+use NES::PPU::Tile;
+use NES::PPU::NameTable;
+use NES::PPU::PaletteTable;
 
 sub new {
 	my ($class, $nes) = @_;

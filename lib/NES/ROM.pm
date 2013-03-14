@@ -2,6 +2,7 @@ package NES::ROM;
 
 use strict;
 use warnings;
+use NES::PPU;
 
 sub new {
 	my ($class, $nes) = @_;

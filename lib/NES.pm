@@ -3,6 +3,8 @@ package NES;
 use strict;
 use warnings;
 use NES::CPU;
+use NES::ROM;
+use NES::CPU;
 use NES::UI::Dummy;
 
 sub new {
