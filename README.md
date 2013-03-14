@@ -1,5 +1,7 @@
 # perl-nes
 
+![perl-nes logo](http://bb.ohsk.net/uploads/perl-nes.png)
+
 A NES Emulator written in Perl.  The goal of this project is to write a fully functioning NES emulator in Perl.
 
 # Perl requirements
