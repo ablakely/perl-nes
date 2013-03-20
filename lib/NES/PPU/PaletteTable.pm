@@ -41,12 +41,70 @@ sub reset {
 sub load_NTSC_palette {
 	my ($self) = @_;
 
-	$self->{cur_table} = (0x525252, 0xB40000, 0xA00000, 0xB1003D, 0x740069, 0x00005B, 0x00005F, 0x001840, 0x002F10, 0x084A08,
-		 0x006700, 0x124200, 0x6D2800, 0x000000, 0x000000, 0x000000, 0xC4D5E7, 0xFF4000, 0xDC0E22, 0xFF476B, 0xD7009F, 0x680AD7,
-		 0x0019BC, 0x0054B1, 0x006A5B, 0x008C03, 0x00AB00, 0x2C8800, 0xA47200, 0x000000, 0x000000, 0x000000, 0xF8F8F8, 0xFFAB3C,
-		 0xFF7981, 0xFF5BC5, 0xFF48F2, 0xDF49FF, 0x476DFF, 0x00B4F7, 0x00E0FF, 0x00E375, 0x03F42B, 0x78B82E, 0xE5E218, 0x787878,
-		 0x000000, 0x000000, 0xFFFFFF, 0xFFF2BE, 0xF8B8B8, 0xF8B8D8, 0xFFB6FF, 0xFFC3FF, 0xC7D1FF, 0x9ADAFF, 0x88EDF8, 0x83FFDD,
-		 0xB8F8B8, 0xF5F8AC, 0xFFFFB0, 0xF8D8F8, 0x000000, 0x000000);
+	$self->{cur_table}[0]	= 0x525252;
+	$self->{cur_table}[1]	= 0xB40000;
+	$self->{cur_table}[2]	= 0xA00000;
+	$self->{cur_table}[3]	= 0xB1003D;
+	$self->{cur_table}[4]	= 0x740069;
+	$self->{cur_table}[5]	= 0x00005B;
+	$self->{cur_table}[6]	= 0x00005F;
+	$self->{cur_table}[7]	= 0x001840;
+	$self->{cur_table}[8]	= 0x002F10;
+	$self->{cur_table}[9]	= 0x084A08;
+	$self->{cur_table}[10]	= 0x006700;
+	$self->{cur_table}[11]	= 0x124200;
+	$self->{cur_table}[12]	= 0x6D2800;
+	$self->{cur_table}[13]	= 0x000000;
+	$self->{cur_table}[14]	= 0x000000;
+	$self->{cur_table}[15]	= 0x000000;
+	$self->{cur_table}[16]	= 0xC4D5E7;
+	$self->{cur_table}[17]	= 0xFF4000;
+	$self->{cur_table}[18]	= 0xDC0E22;
+	$self->{cur_table}[19]	= 0xFF476B;
+	$self->{cur_table}[20]	= 0xD7009F;
+	$self->{cur_table}[21]	= 0x680AD7;
+	$self->{cur_table}[22]	= 0x0019BC;
+	$self->{cur_table}[23]	= 0x0054B1;
+	$self->{cur_table}[24]	= 0x006A5B;
+	$self->{cur_table}[25]	= 0x008C03;
+	$self->{cur_table}[26]	= 0x00AB00;
+	$self->{cur_table}[27]	= 0x2C8800;
+	$self->{cur_table}[28]	= 0xA47200;
+	$self->{cur_table}[29]	= 0x000000;
+	$self->{cur_table}[30]	= 0x000000;
+	$self->{cur_table}[31]	= 0x000000;
+	$self->{cur_table}[32]	= 0xF8F8F8;
+	$self->{cur_table}[33]	= 0xFFAB3C;
+	$self->{cur_table}[34]	= 0xFF7981;
+	$self->{cur_table}[35]	= 0xFF5BC5;
+	$self->{cur_table}[36]	= 0xFF48F2;
+	$self->{cur_table}[37]	= 0xDF49FF;
+	$self->{cur_table}[38]	= 0x476DFF;
+	$self->{cur_table}[39]	= 0x00B4F7;
+	$self->{cur_table}[40]	= 0x00E0FF;
+	$self->{cur_table}[41]	= 0x00E375;
+	$self->{cur_table}[42]	= 0x03F42B;
+	$self->{cur_table}[43]	= 0x78B82E;
+	$self->{cur_table}[44]	= 0xE5E218;
+	$self->{cur_table}[45]	= 0x787878;
+	$self->{cur_table}[46]	= 0x000000;
+	$self->{cur_table}[47]	= 0x000000;
+	$self->{cur_table}[48]	= 0xFFFFFF;
+	$self->{cur_table}[49]	= 0xFFF2BE;
+	$self->{cur_table}[50]	= 0xF8B8B8;
+	$self->{cur_table}[51]	= 0xF8B8D8;
+	$self->{cur_table}[52]	= 0xFFB6FF;
+	$self->{cur_table}[53]	= 0xFFC3FF;
+	$self->{cur_table}[54]	= 0xC7D1FF;
+	$self->{cur_table}[55]	= 0x9ADAFF;
+	$self->{cur_table}[56]	= 0x88EDF8;
+	$self->{cur_table}[57]	= 0x83FFDD;
+	$self->{cur_table}[58]	= 0xB8F8B8;
+	$self->{cur_table}[59]	= 0xF5F8AC;
+	$self->{cur_table}[60]	= 0xFFFFB0;
+	$self->{cur_table}[61]	= 0xF8D8F8;
+	$self->{cur_table}[62]	= 0x000000;
+	$self->{cur_table}[63]	= 0x000000;
 
 	make_tables();
 	set_emphasis(0);
@@ -55,12 +113,70 @@ sub load_NTSC_palette {
 sub load_PAL_palette {
 	my ($self) =  @_;
 
-	$self->{cur_table} = (0x525252, 0xB40000, 0xA00000, 0xB1003D, 0x740069, 0x00005B, 0x00005F, 0x001840, 0x002F10, 0x084A08,
-		 0x006700, 0x124200, 0x6D2800, 0x000000, 0x000000, 0x000000, 0xC4D5E7, 0xFF4000, 0xDC0E22, 0xFF476B, 0xD7009F, 0x680AD7,
-		 0x0019BC, 0x0054B1, 0x006A5B, 0x008C03, 0x00AB00, 0x2C8800, 0xA47200, 0x000000, 0x000000, 0x000000, 0xF8F8F8, 0xFFAB3C,
-		 0xFF7981, 0xFF5BC5, 0xFF48F2, 0xDF49FF, 0x476DFF, 0x00B4F7, 0x00E0FF, 0x00E375, 0x03F42B, 0x78B82E, 0xE5E218, 0x787878,
-		 0x000000, 0x000000, 0xFFFFFF, 0xFFF2BE, 0xF8B8B8, 0xF8B8D8, 0xFFB6FF, 0xFFC3FF, 0xC7D1FF, 0x9ADAFF, 0x88EDF8, 0x83FFDD,
-		 0xB8F8B8, 0xF5F8AC, 0xFFFFB0, 0xF8D8F8, 0x000000, 0x000000);
+	$self->{cur_table}[0]	= 0x525252;
+	$self->{cur_table}[1]	= 0xB40000;
+	$self->{cur_table}[2]	= 0xA00000;
+	$self->{cur_table}[3]	= 0xB1003D;
+	$self->{cur_table}[4]	= 0x740069;
+	$self->{cur_table}[5]	= 0x00005B;
+	$self->{cur_table}[6]	= 0x00005F;
+	$self->{cur_table}[7]	= 0x001840;
+	$self->{cur_table}[8]	= 0x002F10;
+	$self->{cur_table}[9]	= 0x084A08;
+	$self->{cur_table}[10]	= 0x006700;
+	$self->{cur_table}[11]	= 0x124200;
+	$self->{cur_table}[12]	= 0x6D2800;
+	$self->{cur_table}[13]	= 0x000000;
+	$self->{cur_table}[14]	= 0x000000;
+	$self->{cur_table}[15]	= 0x000000;
+	$self->{cur_table}[16]	= 0xC4D5E7;
+	$self->{cur_table}[17]	= 0xFF4000;
+	$self->{cur_table}[18]	= 0xDC0E22;
+	$self->{cur_table}[19]	= 0xFF476B;
+	$self->{cur_table}[20]	= 0xD7009F;
+	$self->{cur_table}[21]	= 0x680AD7;
+	$self->{cur_table}[22]	= 0x0019BC;
+	$self->{cur_table}[23]	= 0x0054B1;
+	$self->{cur_table}[24]	= 0x006A5B;
+	$self->{cur_table}[25]	= 0x008C03;
+	$self->{cur_table}[26]	= 0x00AB00;
+	$self->{cur_table}[27]	= 0x2C8800;
+	$self->{cur_table}[28]	= 0xA47200;
+	$self->{cur_table}[29]	= 0x000000;
+	$self->{cur_table}[30]	= 0x000000;
+	$self->{cur_table}[31]	= 0x000000;
+	$self->{cur_table}[32]	= 0xF8F8F8;
+	$self->{cur_table}[33]	= 0xFFAB3C;
+	$self->{cur_table}[34]	= 0xFF7981;
+	$self->{cur_table}[35]	= 0xFF5BC5;
+	$self->{cur_table}[36]	= 0xFF48F2;
+	$self->{cur_table}[37]	= 0xDF49FF;
+	$self->{cur_table}[38]	= 0x476DFF;
+	$self->{cur_table}[39]	= 0x00B4F7;
+	$self->{cur_table}[40]	= 0x00E0FF;
+	$self->{cur_table}[41]	= 0x00E375;
+	$self->{cur_table}[42]	= 0x03F42B;
+	$self->{cur_table}[43]	= 0x78B82E;
+	$self->{cur_table}[44]	= 0xE5E218;
+	$self->{cur_table}[45]	= 0x787878;
+	$self->{cur_table}[46]	= 0x000000;
+	$self->{cur_table}[47]	= 0x000000;
+	$self->{cur_table}[48]	= 0xFFFFFF;
+	$self->{cur_table}[49]	= 0xFFF2BE;
+	$self->{cur_table}[50]	= 0xF8B8B8;
+	$self->{cur_table}[51]	= 0xF8B8D8;
+	$self->{cur_table}[52]	= 0xFFB6FF;
+	$self->{cur_table}[53]	= 0xFFC3FF;
+	$self->{cur_table}[54]	= 0xC7D1FF;
+	$self->{cur_table}[55]	= 0x9ADAFF;
+	$self->{cur_table}[56]	= 0x88EDF8;
+	$self->{cur_table}[57]	= 0x83FFDD;
+	$self->{cur_table}[58]	= 0xB8F8B8;
+	$self->{cur_table}[59]	= 0xF5F8AC;
+	$self->{cur_table}[60]	= 0xFFFFB0;
+	$self->{cur_table}[61]	= 0xF8D8F8;
+	$self->{cur_table}[62]	= 0x000000;
+	$self->{cur_table}[63]	= 0x000000;
 
 	make_tables();
 	set_emphasis(0);

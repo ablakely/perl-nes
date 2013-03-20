@@ -22,6 +22,7 @@ use warnings;
 use NES::CPU;
 use NES::ROM;
 use NES::CPU;
+use NES::PAPU;
 use NES::UI::Dummy;
 
 sub new {
@@ -47,8 +48,8 @@ sub new {
 		opts		=> $opts,
 		ui			=> $opts->{ui}->new($self),
 		cpu			=> NES::CPU->new($self),
-		ppu			=> undef,
-		papu		=> undef,
+		ppu			=> NES::PPU->new($self),
+		papu		=> NES::PAPU->new($self),
 		mmap		=> undef,
 
 		is_running	=> 0,

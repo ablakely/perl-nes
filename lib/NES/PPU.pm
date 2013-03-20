@@ -17,8 +17,11 @@
 
 package NES::PPU;
 
+use v5.10.1;
+
 use strict;
 use warnings;
+use Carp;
 use NES::ROM;
 use NES::CPU;
 use NES::PPU::Tile;
@@ -288,7 +291,7 @@ sub set_mirroring {
 		$self->{vram_mirror_table}[0x8000]		= undef;
 	}
 
-	for ($i = 0; $i < 0x8000; $i++) {
+	for (my $i = 0; $i < 0x8000; $i++) {
 		$self->{vram_mirror_table}[$i] = $i;
 	}
 
@@ -391,7 +394,7 @@ sub start_vblank {
 sub end_scanline {
 	my ($self) = @_;
 
-	given ($self->{scanline}) {
+	for ($self->{scanline}) {
 		when (19) {
 			# Dummy scanline -- May be variable length
 
@@ -549,7 +552,7 @@ sub start_frame {
 	}
 	my $i;
 
-	for ($i = 0; i < 256*240; $i++) {
+	for ($i = 0; $i < 256*240; $i++) {
 		$self->{buffer}[$i] = $bg_color;
 	}
 
@@ -593,7 +596,7 @@ sub end_frame {
 	if ($self->{clip_to_tv_size} || $self->{f_bg_clipping} == 0 || $self->{f_sp_clipping} == 0) {
 		# Clip left 8-pixels column
 
-		for ($y = 0; $y = 240; $y++) {
+		for ($y = 0; $y == 240; $y++) {
 			for ($x = 0; $x < 8; $x++) {
 				$self->{buffer}[($y << 8)+$x] = 0;
 			}
@@ -654,7 +657,7 @@ sub update_control_reg2 {
 	$self->{f_bg_clipping}			= ($value >> 1)&1;
 	$self->{f_disp_type}			= $value&1;
 
-	if ($self->{f_disp_type} == 0) }
+	if ($self->{f_disp_type} == 0) {
 		$self->{pal_table}->set_emphasis($self->{f_color});
 	}
 	update_palettes();
@@ -749,7 +752,7 @@ sub write_vram_address {
 		$self->{regFV}		= ($address >> 4)&3;
 		$self->{regV}		= ($address >> 3)&1;
 		$self->{regH}		= ($address >> 2)&1;
-		$self->{regVT}		= ($self->{regVT}&7) | (($adress&3) << 3);
+		$self->{regVT}		= ($self->{regVT}&7) | (($address&3) << 3);
 	} else {
 		trigger_rendering();
 
@@ -977,11 +980,10 @@ sub mirrored_write {
 		elsif ($address == 0x3F0C || $address == 0x3F1C) {
 			write_mem(0x3F0C, $value);
 			write_mem(0x3F1C, $value);
+		} else {
+			write_mem($address, $value);
 		}
-		else {
-		write_mem($address, $value);
-	} 
-	else {
+	}  else {
 		# Use lookup table for mirrored address
 		if ($address < $#$self->{vram_mirror_table}) {
 			write_mem($self->{vram_mirror_table}[$address], $value);
@@ -991,6 +993,7 @@ sub mirrored_write {
 		}
 	}
 }
+
 
 sub trigger_rendering {
 	my ($self) = @_;
@@ -1024,8 +1027,8 @@ sub render_frame_partially {
 		my $pix_rendered	= $self->{pix_rendered};
 
 		for (my $dest_index = $si; $dest_index < $ei; $dest_index++) {
-			if ($pix_rendered[$dest_index] > 0xFF) {
-				$buffer[$dest_index] = $bg_buffer[$dest_index];
+			if (@$pix_rendered[$dest_index] > 0xFF) {
+				@$buffer[$dest_index] = @$bg_buffer[$dest_index];
 			}
 		}
 	}
@@ -1068,17 +1071,17 @@ sub render_bg_scanline {
 				if ($self->{valid_tile_data}) {
 					# Get data from array
 
-					$t 			= $scantile[$tile];
+					$t 			= @$scantile[$tile];
 					$tpix 		= $t->{pix};
-					$att 		= $attrib[$tile];
+					$att 		= @$attrib[$tile];
 				} else {
 					# Fetch data
 
-					$t 					= $pt_tile[$base_tile + $name_table[$self->{curNt}]->get_tile_index($self->{cntHT}, $self->{cntVT})];
+					$t 					= @$pt_tile[$base_tile + @$name_table[$self->{curNt}]->get_tile_index($self->{cntHT}, $self->{cntVT})];
 					$tpix 				= $t->{pix};
-					$att 				= $name_table[$self->curNt]->get_attrib($self->{cntHT}, $self->{cntVT});
-					$scantile[$tile]	= $t;
-					$attrib[$tile]		= $att;
+					$att 				= @$name_table[$self->curNt]->get_attrib($self->{cntHT}, $self->{cntVT});
+					@$scantile[$tile]	= $t;
+					@$attrib[$tile]		= $att;
 				}
 
 				# Render tile scanline
@@ -1093,16 +1096,16 @@ sub render_bg_scanline {
 
 					if ($t->{opaque}[$self->{cntFV}]) {
 						for (;$sx < 8; $sx++) {
-							$target_buffer[$dest_index] = $img_palette[$tpix[$tscanoffset+$sx]+$att];
-							$pix_rendered[$dest_index] |= 256;
+							@$target_buffer[$dest_index] = @$img_palette[@$tpix[$tscanoffset+$sx]+$att];
+							@$pix_rendered[$dest_index] |= 256;
 							$dest_index++;
 						}
 					} else {
 						for (;$sx < 8; $sx++) {
-							$col = $tpix[$tscanoffset+$sx];
+							$col = @$tpix[$tscanoffset+$sx];
 							if ($col != 0) {
-								$target_buffer[$dest_index] = $img_palette[$col+$att];
-								$pix_rendered[$dest_index] |= 256;
+								@$target_buffer[$dest_index] = @$img_palette[$col+$att];
+								@$pix_rendered[$dest_index] |= 256;
 							}
 							$dest_index++;
 						}
@@ -1115,7 +1118,7 @@ sub render_bg_scanline {
 				$self->{cntHT}			= 0;
 				$self->{cntH}++;
 				$self->{cntH}		   %= 2;
-				$self->{curNt}			= $self->{n_table1}[($self->{cntV} << 1) + $cntH];
+				$self->{curNt}			= $self->{n_table1}[($self->{cntV} << 1) + $self->{cntH}];
 			}
 		}
 
@@ -1336,7 +1339,7 @@ sub check_sprite0 {
 				# Second half of sprite
 				$t 		= $self->{pt_tile}[$self->{spr_tile}[0]+($self->{vert_flip}[0]?0:1)+(($self->{spr_tile}[0]&1) != 0?255:0)];
 				if ($self->{vert_flip}[0]) {
-					$toffset = 15 - $offset;
+					$toffset = 15 - $toffset;
 				} else {
 					$toffset -= 8;
 				}

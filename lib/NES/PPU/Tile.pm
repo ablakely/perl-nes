@@ -19,7 +19,7 @@ package NES::PPU::Tile;
 
 use strict;
 use warnings;
-use Croak;
+use Carp;
 
 sub new {
 	my ($class) = @_;
@@ -37,7 +37,7 @@ sub new {
 		tpri 			=> undef,
 		c 				=> undef,
 		initalized 		=> 0,
-		opaque 			=> ()
+		opaque 			=> (),
 	};
 
 	return bless($self, $class);
@@ -47,7 +47,7 @@ sub set_buffer {
 	my ($self, $scanline) = @_;
 
 	for ($self->{y} = 0; $self->{y} < 8; $self->{y}++) {
-		set_scanline($self->{y}, $scanline[$self->{y}], $scanline[$self->{y}+8]);
+		set_scanline($self->{y}, @$scanline[$self->{y}], @$scanline[$self->{y}+8]);
 	}
 }
 
@@ -85,7 +85,7 @@ sub render {
 	}
 
 	if ($dy < 0) {
-		$srcy1 - $dy;
+		$srcy1 -= $dy;
 	}
 
 	if ($dy + $srcy2 >= 240) {
@@ -97,15 +97,15 @@ sub render {
 		$self->{t_index}		= 0;
 
 		for ($self->{y} = 0; $self->{y} < 8; $self->{y}++) {
-			for ($self-{x} = 0; $self->{x} < 8; $self->{x}++) {
-				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $src1 && $self->{y} < $srcy2) {
+			for ($self->{x} = 0; $self->{x} < 8; $self->{x}++) {
+				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $srcy1 && $self->{y} < $srcy2) {
 					$self->{pal_index} 		= $self->{pix}[$self->{t_index}];
-					$self->{tpri}			= $pri_table[$self->{fb_index}];
+					$self->{tpri}			= @$pri_table[$self->{fb_index}];
 
 					if ($self->{pal_index} != 0 && $pri <= ($self->{tpri}&0xFF)) {
-						$buffer[$self->{fb_index}] 		= $palette[$self->{pal_index}+$pal_add];
+						@$buffer[$self->{fb_index}] 	= @$palette[$self->{pal_index}+$pal_add];
 						$self->{tpri} 			   		= ($self->{tpri}&0xF00) | $pri;
-						$pri_table[$self->{fb_index}]	= $self->{tpri};
+						@$pri_table[$self->{fb_index}]	= $self->{tpri};
 					}
 				}
 				$self->{fb_index}++;
@@ -121,13 +121,13 @@ sub render {
 		for ($self->{y} = 0; $self->{y} < 8; $self->{y}++) {
 			for ($self->{x} = 0; $self->{x} < 8; $self->{x}++) {
 				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $srcy1 && $self->{y} < $srcy2) {
-					$self->{pal_index} 		= $self->{pix}[$self->{t_index}];
-					$self->{tpri} 			= $pri_table[$self->{fb_index}];
+					$self->{pal_index} 		= @$self->{pix}[$self->{t_index}];
+					$self->{tpri} 			= @$pri_table[$self->{fb_index}];
 
 					if ($self->{pal_index} != 0 && $pri <= ($self->{tpri}&0xFF)) {
-						$buffer[$self->{fb_index}] 		= $palette[$self->{pal_index} + $pal_add];
+						@$buffer[$self->{fb_index}] 	= @$palette[$self->{pal_index} + $pal_add];
 						$self->{tpri} 					= ($self->{tpri} & 0xF00) | $pri;
-						$pri_table[$self->{fb_index}] 	= $self->{tpri};
+						@$pri_table[$self->{fb_index}] 	= $self->{tpri};
 					}
 				}
 				$self->{fb_index}++;
@@ -144,13 +144,13 @@ sub render {
 		for ($self->{y} = 0; $self->{y} < 8; $self->{y}++) {
 			for ($self->{x} = 0; $self->{x} < 8; $self->{x}++) {
 				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $srcy1 && $self->{y} < $srcy2) {
-					$self->{pal_index} 		= $self->{pix}[$self->{t_index}];
-					$self->{tpri} 			= $pri_table[$self->{fb_index}];
+					$self->{pal_index} 		= @$self->{pix}[$self->{t_index}];
+					$self->{tpri} 			= @$pri_table[$self->{fb_index}];
 
 					if ($self->{pal_index} != 0 && $pri <= ($self->{tpri}&0xFF)) {
-						$buffer[$self->{fb_index}] 		= $palette[$self->{pal_index}+$pal_add];
+						@$buffer[$self->{fb_index}] 	= @$palette[$self->{pal_index}+$pal_add];
 						$self->{tpri}              		= ($self->{tpri} & 0xF00) | $pri;
-						$pri_table{$self->{fb_index}}	= $self->{tpri};
+						@$pri_table[$self->{fb_index}]	= $self->{tpri};
 					}
 				}
 				$self->{fb_index}++;
@@ -166,14 +166,14 @@ sub render {
 
 		for ($self->{y} = 0; $self->{y} < 8; $self->{y}++) {
 			for ($self->{x} = 0; $self->{x} < 8; $self->{x}++) {
-				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $srcy1 && $self->{y} < srcy2) {
-					$self->{pal_index} 	= $self->{pix}[$self->{fb_index}];
-					$self->{tpri} 		= $pri_table[$self->{fb_index}];
+				if ($self->{x} >= $srcx1 && $self->{x} < $srcx2 && $self->{y} >= $srcy1 && $self->{y} < $srcy2) {
+					$self->{pal_index} 	= @$self->{pix}[$self->{fb_index}];
+					$self->{tpri} 		= @$pri_table[$self->{fb_index}];
 
 					if ($self->{pal_index} != 0 && $pri <= ($self->{tpri}&0xFF)) {
-						$buffer[$self->{fb_index}] 		= $palette[$self->{pal_index}+$pal_add];
+						@$buffer[$self->{fb_index}] 	= @$palette[$self->{pal_index}+$pal_add];
 						$self->{tpri} 					= ($self->{tpri} & 0xFF) | $pri;
-						$pri_table[$self->{fb_index}] 	= $self->{tpri};
+						@$pri_table[$self->{fb_index}] 	= $self->{tpri};
 					}
 				}
 				$self->{fb_index}++;
@@ -188,7 +188,7 @@ sub render {
 sub is_transparent {
 	my ($self, $x, $y) = @_;
 
-	return ($self->{pix}[($y << 3) + $x] == 0);
+	return (@$self->{pix}[($y << 3) + $x] == 0);
 }
 
 1;

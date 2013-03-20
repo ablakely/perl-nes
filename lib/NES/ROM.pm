@@ -117,7 +117,7 @@ sub load {
 	$self->{battery_ram}	= ($self->{header}[6] & 2) != 0;
 	$self->{trainer}		= ($self->{header}[6] & 4) != 0;
 	$self->{four_screen}	= ($self->{header}[6] & 8) != 0;
-	$self->{mapper_type}	= ($self->{header}[6] >> 4 | ($self->{header}[7] & 0xF0);
+	$self->{mapper_type}	= ($self->{header}[6] >> 4) | ($self->{header}[7] & 0xF0);
 
 	# TODO:
 	# if ($self->{battery_ram}) {
@@ -160,7 +160,7 @@ sub load {
 
 	for ($i = 0; $i < $self->{vrom_count}; $i++) {
 		$self->{vrom}[$i] = ();
-		$self->{vrom][$i][4096] = undef;
+		$self->{vrom}[$i][4096] = undef;
 
 		for ($j = 0; $j < 4096; $j++) {
 			if ($offset+$j >= length $data) {
@@ -191,7 +191,7 @@ sub load {
 			$left_over  = $i & 16;
 
 			if ($left_over < 8) {
-				$self->{vrom_tile}[$v][$tile_index]->set_scanline($left_over, $self->{vrom}[$v][$i], $self->{vrom}[$v][$i+8]));
+				$self->{vrom_tile}[$v][$tile_index]->set_scanline($left_over, $self->{vrom}[$v][$i], $self->{vrom}[$v][$i+8]);
 			} else {
 				$self->{vrom_tile}[$v][$tile_index]->set_scanline($left_over - 8, $self->{vrom}[$v][$i - 8], $self->{vrom}[$v][$i]);
 			}
