@@ -1467,6 +1467,7 @@ sub pattern_write {
 # Updates the internal name table buffers with this new byte.
 sub name_table_write {
 	my ($self, $index, $address, $value) = @_;
+	$self->{name_table}[$index]->{title}[$address] = $value;
 
 	# Update sprite 0 hit
 	check_sprite0($self->{scanline}-20);
